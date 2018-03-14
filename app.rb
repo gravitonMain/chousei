@@ -17,6 +17,10 @@ Slack.configure do |config|
 end
 client = Slack::Web::Client.new
 
+get '/' do
+  "Hello heroku."
+end
+
 post '/command/chousei' do
   if params["token"] != VERIFICATION_TOKEN
     $stderr.puts "invalid token: #{req["token"]}"
