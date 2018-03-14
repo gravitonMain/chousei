@@ -7,4 +7,5 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gem "slack-ruby-client"
 gem "faye-websocket"
 # gem "dotenv"
+gem "foreman"
 gem "sinatra"

@@ -5,10 +5,6 @@ require "slack-ruby-client"
 
 require_relative "chousei.rb"
 
-if require "dotenv"
-  Dotenv.load
-end
-
 VERIFICATION_TOKEN = ENV['SLACK_VERIFICATION_TOKEN']
 
 Slack.configure do |config|
