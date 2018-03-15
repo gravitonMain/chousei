@@ -19,7 +19,7 @@ end
 
 post '/command/chousei' do
   if params["token"] != VERIFICATION_TOKEN
-    $stderr.puts "invalid token: #{req["token"]}"
+    $stderr.puts "invalid token: #{params["token"]}"
   else
     date_from, date_to = params["text"].split.map{|s| Time.parse(s)}
     date_from = Time.now if date_from.nil?
