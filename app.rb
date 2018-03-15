@@ -24,6 +24,7 @@ post '/command/chousei' do
     date_from, date_to = params["text"].split.map{|s| Time.parse(s)}
     date_from = Time.now if date_from.nil?
     date_to = date_from + 60*60*24*31 if date_to.nil?
+    p params["chousei_id"]
     client.chat_postMessage(channel: params["channel_id"], text: '調整さん in Slack', attachments: Chousei.attachments(Chousei.holidays(date_from, date_to)))
   end
   body "調整 done"
