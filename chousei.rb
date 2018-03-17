@@ -7,33 +7,36 @@ module Chousei
   def self.attachments dates
     counter = -1
     dates.map do |date|
+      counter += 1
       {
         text: "#{date}
 :smiley: : 
 :thinking_face: : 
 :confounded: : ",
         fallback: "You are unable to choose",
-        callback_id: "chousei_selection",
+        callback_id: "chousei_buttons",
         color: "#3AA3E3",
         attachment_type: "default",
         short: true,
         actions: [
           {
-            name: "chousei_type_list_#{counter+=1}",
-            text: "選択",
-            type: "select",
-            options: [
-              {
-                text: "○",
-                value: "ok"
-              },{
-                text: "△",
-                value: "maybe"
-              },{
-                text: "×",
-                value: "ng"
-              }
-            ]
+            type: "button",
+            name: "chousei_button_#{counter}",
+            text: "○",
+            style: "default",
+            value: "ok"
+          }, {
+            type: "button",
+            name: "chousei_button_#{counter}",
+            text: "△",
+            style: "default",
+            value: "maybe"
+          }, {
+            type: "button",
+            name: "chousei_button_#{counter}",
+            text: "×",
+            style: "default",
+            value: "ng"
           }
         ]
       }
@@ -86,7 +89,7 @@ module Chousei
       attach_field = attachments[attach_index]
       header, users = parse_field_text attach_field["text"]
       users.map{|e| e[1].delete(username)}
-      case user_action["selected_options"][0]["value"]
+      case user_action["value"]
       when "ok"
         users[0][1] << username
       when "maybe"
@@ -97,10 +100,6 @@ module Chousei
       attach_field["text"] = compose_field_text header, users
       attach_field["color"] = update_color users
       attachments[attach_index] = attach_field
-      selected_option = attach_field["actions"][0]["options"].find do |o|
-        o["value"] == user_action["selected_options"][0]["value"]
-      end
-      attachments[attach_index]["actions"][0]["selected_options"] = [selected_option]
       return attachments
     end
     

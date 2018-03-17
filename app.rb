@@ -24,7 +24,6 @@ post '/command/chousei' do
     date_from, date_to = params["text"].split.map{|s| Time.parse(s)}
     date_from = Time.now if date_from.nil?
     date_to = date_from + 60*60*24*31 if date_to.nil?
-    p params["chousei_id"]
     client.chat_postMessage(channel: params["channel_id"], text: '調整さん in Slack', attachments: Chousei.attachments(Chousei.holidays(date_from, date_to)))
   end
   body "調整 done"
@@ -38,9 +37,15 @@ post '/interactive' do
     user_action = req["actions"][0]
     channel = req["channel"]
     username = req["user"]["name"]
-    if user_action["type"] == "select"
+    orig = req["original_message"]
+    case user_action["type"]
+    when "select"
       if user_action["name"] =~ /^chousei_type_list/
-        orig = req["original_message"]
+        updated = Chousei::Interactive.update_attachments orig["attachments"], username, user_action
+        client.chat_update(channel: channel["id"], text: orig["text"], attachments: updated, ts: orig["ts"])
+      end
+    when "button"
+      if user_action["name"] =~ /^chousei_button/
         updated = Chousei::Interactive.update_attachments orig["attachments"], username, user_action
         client.chat_update(channel: channel["id"], text: orig["text"], attachments: updated, ts: orig["ts"])
       end
