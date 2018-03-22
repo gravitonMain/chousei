@@ -22,17 +22,32 @@
 
 ### 1. attachments付きメッセージ -> Slack
 
-
+attachmentsを参照してね
 
 ### 2. Slack -> Client
 
+届く
+
 ### 3. Client -> Slack
+
+クライアントが対応してたらUIが表示されてリクエストをSlackに送る
 
 ### 4. Slack -> Server
 
+送られてきたリクエストからSlackが登録されたサーバにリクエストを送信される
+
 ### 5. Server -> Slack
 
-chat.update
+リクエストに応じたレスポンスをSlackに送る
+chat.updateでやるといい感じ
 https://api.slack.com/methods/chat.update
 
 ### 6. Slack -> Client
+
+サーバからのレスポンスがClientに送られる
+
+## Slack -> Serverのデータ
+
+リクエストがjsonのpayloadフィールドに文字列にエンコードされて送られてくるので
+jsonでパースしてからpayloadフィールドを再度パースする必要がある
+actionsに操作が入ってるのでoriginal_messageを編集してoriginal_messageをchat.updateするのがベター

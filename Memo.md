@@ -1,7 +1,7 @@
 # Gemfile
 
 `ruby "2.4.0"`
-みたいに書いておかないとけない？
+みたいに書いておかないといけない？
 
 
 # Procfile
@@ -27,12 +27,13 @@ run Sinatra::Application
 ```
 
 がいる？
-
+なくてもherokuでは動いてるのでなくてもいいのかもしれない
 
 
 # heroku
 
 1. heroku login
 2. heroku create
-3. git remote heroku master
-
+3. heroku config:set SLACK_API_TOKEN=...
+4. git remote heroku master
+5. git push heroku master
